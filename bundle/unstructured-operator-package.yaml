@@ -1,0 +1,5 @@
+channels:
+- currentCSV: unstructured-operator.v1.1.0
+  name: stable
+defaultChannel: stable
+packageName: unstructured-operator
