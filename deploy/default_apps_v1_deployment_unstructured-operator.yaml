@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    control-plane: controller-manager
+  name: unstructured-operator
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      control-plane: controller-manager
+  template:
+    metadata:
+      labels:
+        control-plane: controller-manager
+    spec:
+      containers:
+      - args:
+        - --leader-elect
+        command:
+        - /manager
+        env:
+        - name: WATCH_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: RELATED_IMAGE_ANZO_MICROSERVICES_LEADER
+          value: registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader:5.2.1
+        - name: RELATED_IMAGE_ANZO_UNSTRUCTURED_WORKER
+          value: registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker:5.2.1
+        image: registry.connect.redhat.com/cambridgesemantics/unstructured-operator:2.0.0
+        imagePullPolicy: Always
+        name: manager
+        securityContext:
+          allowPrivilegeEscalation: false
+      serviceAccountName: unstructured-operator
+      terminationGracePeriodSeconds: 10

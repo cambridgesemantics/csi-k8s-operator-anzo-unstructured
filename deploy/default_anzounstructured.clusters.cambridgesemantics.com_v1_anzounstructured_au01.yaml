@@ -1,0 +1,54 @@
+apiVersion: anzounstructured.clusters.cambridgesemantics.com/v1
+kind: AnzoUnstructured
+metadata:
+  name: au01
+spec:
+  auWorker:
+    nodeConfig:
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: anzounstructured
+        serviceName: au-au01-w
+        template:
+          metadata:
+            labels:
+              app: anzounstructured
+          spec:
+            containers:
+            - image: registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker:5.2.1
+              name: w
+              resources:
+                limits:
+                  cpu: "2"
+                  memory: 4Gi
+                requests:
+                  cpu: "2"
+                  memory: 4Gi
+            serviceAccountName: unstructured-operator
+  msLeader:
+    nodeConfig:
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: anzounstructured
+        serviceName: au-au01-ms
+        template:
+          metadata:
+            labels:
+              app: anzounstructured
+          spec:
+            containers:
+            - image: registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader:5.2.1
+              name: ms
+              resources:
+                limits:
+                  cpu: "2"
+                  memory: 4Gi
+                requests:
+                  cpu: "2"
+                  memory: 4Gi
+            serviceAccountName: unstructured-operator
+status: {}
