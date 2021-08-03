@@ -1,5 +1,5 @@
 channels:
-- currentCSV: anzounstructured-operator.v1.1.0
+- currentCSV: anzounstructured-operator.v2.0.101
   name: stable
 defaultChannel: stable
 packageName: anzounstructured-operator

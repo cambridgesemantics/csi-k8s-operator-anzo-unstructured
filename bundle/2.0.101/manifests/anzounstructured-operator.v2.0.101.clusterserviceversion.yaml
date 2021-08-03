@@ -103,7 +103,7 @@ metadata:
     operators.operatorframework.io/project_layout: unknown
     repository: ""
     support: Cambridge Semantics
-  name: unstructured-operator.v2.0.101
+  name: anzounstructured-operator.v2.0.101
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
