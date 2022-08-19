@@ -1,6 +1,13 @@
 # anzo-unstructured-operator
 ## By Cambridge Semantics Inc
 ## Supported tags
+
+| Release | Tags                                       |
+| :---:   | :---                                       |
+|  2.0.2   |  2.0.2, 2.0.2-{{ build }}  |
+|  2.0.1   |  2.0.1, 2.0.1-{{ build }}  |
+|  2.0.0   |  2.0.0, 2.0.0-{{ build }}  |
+|  1.1.0   |  1.1.0, 1.1.0-{{ build }}  |
 ## About Anzo Unstructured
 Anzo Unstructured solution has two main parts:
 ### Microservice Leader
@@ -12,8 +19,8 @@ The Anzo Unstructured Worker works in concert with the Microservice Leader and A
 
 **Operator Version** v1
 ## Prerequisites
-* Kubernetes cluster, versions {1.20-1.16}
-* Kubectl, versions {1.20-1.16}
+* Kubernetes cluster, versions {1.22-1.16}
+* Kubectl, versions {1.22-1.16}
 
 ## Setting up prerequisites
 

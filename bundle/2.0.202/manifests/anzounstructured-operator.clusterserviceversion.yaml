@@ -2,16 +2,108 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
-    alm-examples: '[]'
+    alm-examples: |-
+      [
+        {
+          "apiVersion": "anzounstructured.clusters.cambridgesemantics.com/v1",
+          "kind": "AnzoUnstructured",
+          "metadata": {
+            "name": "au01"
+          },
+          "spec": {
+            "auWorker": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app": "anzounstructured"
+                    }
+                  },
+                  "serviceName": "au-au01-w",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app": "anzounstructured"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker:5.3.8",
+                          "name": "w",
+                          "resources": {
+                            "limits": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            },
+                            "requests": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "unstructured-operator"
+                    }
+                  }
+                }
+              }
+            },
+            "msLeader": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app": "anzounstructured"
+                    }
+                  },
+                  "serviceName": "au-au01-ms",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app": "anzounstructured"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader:5.3.8",
+                          "name": "ms",
+                          "resources": {
+                            "limits": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            },
+                            "requests": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "unstructured-operator"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "status": {}
+        }
+      ]
     capabilities: Basic Install
     categories: Database, Big Data
     certified: "true"
-    containerImage: registry.connect.redhat.com/cambridgesemantics/unstructured-operator:OPERATOR_VERSION
-    createdAt: CSV_CREATION_DATE
+    containerImage: registry.connect.redhat.com/cambridgesemantics/unstructured-operator:2.0.2
+    createdAt: 2022-08-18
     description: Kubernetes Operator for Anzo Unstructured
+    operators.operatorframework.io/builder: operator-sdk-v1.22.2
+    operators.operatorframework.io/project_layout: unknown
     repository: ""
     support: Cambridge Semantics
-  name: anzounstructured-operator.v0.0.0
+  name: anzounstructured-operator.v2.0.202
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -90,7 +182,7 @@ spec:
     Currently, this is possible only through existing Anzo installation.
 
     ### Installation
-     Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo-unstructured/blob/vOPERATOR_VERSION/README.md )
+     Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo-unstructured/blob/v2.0.2/README.md )
 
     ### Documentation
 
@@ -105,8 +197,164 @@ spec:
     mediatype: image/png
   install:
     spec:
-      deployments: null
-    strategy: ""
+      clusterPermissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumes
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - persistentvolumeclaims
+          verbs:
+          - get
+          - list
+          - watch
+          - update
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - extensions
+          resourceNames:
+          - nfs-provisioner
+          resources:
+          - podsecuritypolicies
+          verbs:
+          - use
+        - apiGroups:
+          - anzounstructured.clusters.cambridgesemantics.com
+          resources:
+          - anzounstructureds
+          - anzounstructureds/finalizers
+          verbs:
+          - '*'
+        serviceAccountName: unstructured-operator
+      deployments:
+      - label:
+          control-plane: controller-manager
+        name: unstructured-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              control-plane: controller-manager
+          strategy: {}
+          template:
+            metadata:
+              labels:
+                control-plane: controller-manager
+            spec:
+              containers:
+              - args:
+                - --leader-elect
+                command:
+                - /manager
+                env:
+                - name: WATCH_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.annotations['olm.targetNamespaces']
+                - name: RELATED_IMAGE_ANZO_MICROSERVICES_LEADER
+                  value: registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader:5.3.8
+                - name: RELATED_IMAGE_ANZO_UNSTRUCTURED_WORKER
+                  value: registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker:5.3.8
+                image: registry.connect.redhat.com/cambridgesemantics/unstructured-operator:2.0.2
+                imagePullPolicy: Always
+                name: manager
+                resources: {}
+                securityContext:
+                  allowPrivilegeEscalation: false
+              serviceAccountName: unstructured-operator
+              terminationGracePeriodSeconds: 10
+      permissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - '*'
+        - apiGroups:
+          - anzounstructured.clusters.cambridgesemantics.com
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps
+          resources:
+          - daemonsets
+          - deployments
+          - replicasets
+          - statefulsets
+          verbs:
+          - '*'
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - create
+          - get
+          - list
+          - update
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          - endpoints
+          - events
+          - persistentvolume
+          - persistentvolumeclaims
+          - pods
+          - secrets
+          - services
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - servicemonitors
+          verbs:
+          - create
+          - get
+        - apiGroups:
+          - policy
+          resourceNames:
+          - privileged
+          resources:
+          - podsecuritypolicies
+          verbs:
+          - use
+        - apiGroups:
+          - security.openshift.io
+          resourceNames:
+          - anyuid
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - use
+        serviceAccountName: unstructured-operator
+    strategy: deployment
   installModes:
   - supported: true
     type: OwnNamespace
@@ -121,11 +369,16 @@ spec:
   - Big Data
   links:
   - name: Anzo Unstructured Operator
-    url: https://github.com/cambridgesemantics/csi-k8s-operator-anzo-unstructured/blob/vOPERATOR_VERSION/README.md
+    url: https://github.com/cambridgesemantics/csi-k8s-operator-anzo-unstructured/blob/v2.0.2/README.md
   maintainers:
   - email: frank@cambridgesemantics.com
     name: Frank Schwichtenberg
   maturity: stable
   provider:
     name: Cambridge Semantics Inc.
-  version: 0.0.0
+  relatedImages:
+  - image: registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader:5.3.8
+    name: anzo-microservices-leader
+  - image: registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker:5.3.8
+    name: anzo-unstructured-worker
+  version: 2.0.202

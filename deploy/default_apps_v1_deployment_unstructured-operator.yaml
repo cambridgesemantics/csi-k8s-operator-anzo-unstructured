@@ -26,10 +26,10 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         - name: RELATED_IMAGE_ANZO_MICROSERVICES_LEADER
-          value: registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader:5.2.1
+          value: registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader:5.3.8
         - name: RELATED_IMAGE_ANZO_UNSTRUCTURED_WORKER
-          value: registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker:5.2.1
-        image: registry.connect.redhat.com/cambridgesemantics/unstructured-operator:2.0.0
+          value: registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker:5.3.8
+        image: registry.connect.redhat.com/cambridgesemantics/unstructured-operator:2.0.2
         imagePullPolicy: Always
         name: manager
         securityContext:

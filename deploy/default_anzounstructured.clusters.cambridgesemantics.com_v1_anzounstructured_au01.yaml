@@ -17,7 +17,7 @@ spec:
               app: anzounstructured
           spec:
             containers:
-            - image: registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker:5.2.1
+            - image: registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker:5.3.8
               name: w
               resources:
                 limits:
@@ -41,7 +41,7 @@ spec:
               app: anzounstructured
           spec:
             containers:
-            - image: registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader:5.2.1
+            - image: registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader:5.3.8
               name: ms
               resources:
                 limits:
