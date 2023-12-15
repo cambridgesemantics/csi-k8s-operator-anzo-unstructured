@@ -1,7 +1,6 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  creationTimestamp: null
   name: unstructured-operator
   namespace: default
 rules:
@@ -61,14 +60,6 @@ rules:
   verbs:
   - create
   - get
-- apiGroups:
-  - policy
-  resourceNames:
-  - privileged
-  resources:
-  - podsecuritypolicies
-  verbs:
-  - use
 - apiGroups:
   - security.openshift.io
   resourceNames:

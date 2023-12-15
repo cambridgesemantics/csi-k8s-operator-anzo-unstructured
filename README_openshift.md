@@ -18,8 +18,8 @@ The Anzo Unstructured Worker works in concert with the Microservice Leader and A
 **Operator Version:** v1
 
 ## Prerequisites
-* Kubernetes cluster, versions {1.24-1.16}
-* Kubectl, versions {1.24-1.16}
+* Kubernetes cluster, versions {1.28-1.16}
+* Kubectl, versions {1.28-1.16}
 
 ## Setting up prerequisites
 

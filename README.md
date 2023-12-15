@@ -4,6 +4,7 @@
 
 | Release | Tags                                       |
 | :---:   | :---                                       |
+|  2.0.5   |  2.0.5, 2.0.5-{{ build }}  |
 |  2.0.3   |  2.0.3, 2.0.3-{{ build }}  |
 |  2.0.2   |  2.0.2, 2.0.2-{{ build }}  |
 |  2.0.1   |  2.0.1, 2.0.1-{{ build }}  |
@@ -20,8 +21,8 @@ The Anzo Unstructured Worker works in concert with the Microservice Leader and A
 
 **Operator Version** v1
 ## Prerequisites
-* Kubernetes cluster, versions {1.24-1.16}
-* Kubectl, versions {1.24-1.16}
+* Kubernetes cluster, versions {1.28-1.16}
+* Kubectl, versions {1.28-1.16}
 
 ## Setting up prerequisites
 
