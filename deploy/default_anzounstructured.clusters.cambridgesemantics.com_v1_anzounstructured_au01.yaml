@@ -17,7 +17,7 @@ spec:
               app: anzounstructured
           spec:
             containers:
-            - image: registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:c6a71ee86fb069c902bf31dca2f6bc6ef43e2129b9a1922d5e1fd6c710d4474b
+            - image: registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:70dd265022423db9b7026fddfd98524e36e58e87d228a5579d3898f57ad906f4
               name: w
               resources:
                 limits:
@@ -41,7 +41,7 @@ spec:
               app: anzounstructured
           spec:
             containers:
-            - image: registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader@sha256:1938b7d515db1e866b24889ccad4da8cd44c8f0ffcc9d087c2128667b537b872
+            - image: registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader@sha256:2069afa1555213cc33905d9fd473b52ec7c68e354c669c8c4f7ac8fd3ba3e23b
               name: ms
               resources:
                 limits:
